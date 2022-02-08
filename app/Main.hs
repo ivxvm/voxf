@@ -2,6 +2,9 @@ module Main where
 
 import Control.Monad
 import Data.Map (Map)
+import Voxf.Prelude
+import Voxf.EntityDef (EntityDef)
+import Voxf.Inventory (Inventory)
 
 data Vec a = Vec a
 
@@ -12,16 +15,6 @@ data World = World
 data Chunk = Chunk
     { chunkId :: Int
     , chunkVoxels :: Octree
-    }
-
-data InventoryItem = InventoryItem
-    { invItemId :: Int
-    , invItemCount :: Int
-    }
-
-data Inventory = Inventory
-    { invSlotsCount :: Int
-    , invItems :: Vec InventoryItem
     }
 
 data Player = Player
@@ -118,6 +111,9 @@ gameLoop tick = go 0.0 initialState where
         let delta = newTimestamp - prevTimestamp
         newState <- tick delta state
         go newTimestamp newState
+
+registerEntityDefs :: [EntityDef] -> IO ()
+registerEntityDefs = undefined
 
 main :: IO ()
 main = do
