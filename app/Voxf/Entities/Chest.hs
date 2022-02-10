@@ -3,8 +3,10 @@ module Voxf.Entities.Chest where -- (entityDef) where
 import Voxf.Prelude
 import Voxf.EntityState
 import Voxf.Message
-import Voxf.MessageBus as MessageBus
+import Voxf.MessageMap as MessageMap
 import Voxf.Inventory
+import Data.Monoid (Sum(..))
+import Data.Foldable
 
 data ChestAnimationState
     = Closed
@@ -19,8 +21,11 @@ data ChestState = ChestState
 
 initialState :: EntityState ChestState
 initialState = EntityState
-    { durability = 100
-    , rotation = ()
+    { entityId = -1
+    , position = V3 0 0 0
+    , rotation = Quaternion 0 (V3 0 1 0)
+    , durability = 100
+    , isStatic = True
     , extraState = ChestState
         { animState = Closed
         , contents = Inventory
@@ -30,14 +35,21 @@ initialState = EntityState
         }
     }
 
-updateDurability :: DeltaTime -> Int -> MessageBus -> Int
-updateDurability delta durability msgs = undefined
+calcDamage :: EntityId -> MessageMap -> Float
+calcDamage entityId msgs = hitDamage + explosionDamage
+    where
+        msgToSum (Hit _ _ damage)     = Sum damage
+        msgToSum (Explosion _ damage) = Sum damage
+        msgToSum _                    = Sum 0
+        hitDamage = getSum $ foldMap' msgToSum $ MessageMap.getByTargetEntityId entityId msgs
+        explosionDamage = getSum $ foldMap' msgToSum $ MessageMap.getByMessageType ExplosionMessageType msgs
 
-update :: DeltaTime -> EntityState ChestState -> MessageBus -> (EntityState ChestState, MessageBus)
-update delta state msgs = (newState, MessageBus.empty)
+
+update :: DeltaTime -> EntityState ChestState -> MessageMap -> (EntityState ChestState, [Message])
+update delta state msgs = (newState, [])
     where
         newState = state
-            { durability = updateDurability delta state.durability msgs }
+            { durability = state.durability - calcDamage state.entityId msgs }
 
 -- entityDef :: EntityDef ChestState
 -- entityDef = EntityDef

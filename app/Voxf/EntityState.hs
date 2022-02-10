@@ -1,8 +1,12 @@
 module Voxf.EntityState where
 
+import Voxf.Prelude
+
 data EntityState ext = EntityState
     { entityId :: Int
-    , durability :: Int
-    , rotation :: ()
+    , position :: V3 Float
+    , rotation :: Quaternion Float
+    , durability :: Float
+    , isStatic :: Bool
     , extraState :: ext
     }

@@ -27,7 +27,7 @@ executable voxf
       Voxf.Inventory
       Voxf.InventoryItem
       Voxf.Message
-      Voxf.MessageBus
+      Voxf.MessageMap
       Voxf.Prelude
       Paths_voxf
   hs-source-dirs:
@@ -35,7 +35,11 @@ executable voxf
   default-extensions:
       OverloadedRecordDot
       DuplicateRecordFields
+      DeriveGeneric
+      DeriveAnyClass
+      StandaloneDeriving
   build-depends:
       base >=4.16
     , containers >=0.6
+    , linear >=1.21
   default-language: Haskell2010

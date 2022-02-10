@@ -1,5 +1,16 @@
 module Voxf.Message where
 
+import Voxf.Prelude
+
+data MessageType
+    = UseMessageType
+    | HitMessageType
+    | ExplosionMessageType
+
 data Message
-    = Use {- SourceEntity TargetEntity TargetVoxel EquippedItem -}
-    | Hit {- SourceEntity TargetEntity -}
+    -- SourceEntity TargetEntity TargetVoxel EquippedItem
+    = Use
+    -- SourceEntity TargetEntity Damage
+    | Hit EntityId EntityId Float
+    -- SourcePosition Power
+    | Explosion () Float

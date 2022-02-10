@@ -6,14 +6,16 @@ maintainer: ivxvm <ivxvm@protonmail.com>
 github: ivxvm/voxf
 category: Gamedev
 
-# ghc-options: -Wall
-
 executable:
   main: Main.hs
   source-dirs: app
   dependencies:
     - base >= 4.16
+    - linear >= 1.21
     - containers >= 0.6
   default-extensions:
     - OverloadedRecordDot
     - DuplicateRecordFields
+    - DeriveGeneric
+    - DeriveAnyClass
+    - StandaloneDeriving

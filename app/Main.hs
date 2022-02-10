@@ -1,10 +1,12 @@
 module Main where
 
-import Control.Monad
-import Data.Map (Map)
 import Voxf.Prelude
 import Voxf.EntityDef (EntityDef)
 import Voxf.Inventory (Inventory)
+import Data.Map (Map)
+import GHC.Exts (Any)
+import System.Mem (performMinorGC)
+import Control.Monad
 
 data Vec a = Vec a
 
@@ -112,7 +114,7 @@ gameLoop tick = go 0.0 initialState where
         newState <- tick delta state
         go newTimestamp newState
 
-registerEntityDefs :: [EntityDef] -> IO ()
+registerEntityDefs :: [EntityDef Any] -> IO ()
 registerEntityDefs = undefined
 
 main :: IO ()
@@ -130,4 +132,5 @@ main = do
             pendingMessages = (pendingMessages gameState') ++ playerMessages
         }
         let (gameState''', newPendingMessages) = updateBlocks delta gameState''
+        performMinorGC
         return $ gameState''' { pendingMessages = newPendingMessages}
