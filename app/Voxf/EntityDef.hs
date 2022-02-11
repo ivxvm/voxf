@@ -4,10 +4,13 @@ import Voxf.Prelude
 import Voxf.Message
 import Voxf.MessageMap
 import Voxf.EntityState
+import Voxf.RenderContext
 
-data EntityDef st = EntityDef
-    { initialState :: EntityState st
+data EntityDef est rst = EntityDef
+    { initEntityState :: EntityState est
+    , initRenderState :: String -> IO rst
     , texture :: ()
-    , render :: DeltaTime -> EntityState st -> IO ()
-    , update :: DeltaTime -> MessageMap -> EntityState st -> (EntityState st, [Message])
+    , renderBatch :: Maybe (DeltaTime -> RenderContext -> EntityState est -> IO ())
+    , renderSingle :: DeltaTime -> RenderContext -> EntityState est -> IO ()
+    , update :: DeltaTime -> MessageMap -> EntityState est -> (EntityState est, [Message])
     }

@@ -7,6 +7,7 @@ import Data.Map (Map)
 import GHC.Exts (Any)
 import System.Mem (performMinorGC)
 import Control.Monad
+import Graphics.GL
 
 data Vec a = Vec a
 
@@ -114,7 +115,7 @@ gameLoop tick = go 0.0 initialState where
         newState <- tick delta state
         go newTimestamp newState
 
-registerEntityDefs :: [EntityDef Any] -> IO ()
+registerEntityDefs :: [EntityDef Any Any] -> IO ()
 registerEntityDefs = undefined
 
 main :: IO ()
@@ -132,5 +133,7 @@ main = do
             pendingMessages = (pendingMessages gameState') ++ playerMessages
         }
         let (gameState''', newPendingMessages) = updateBlocks delta gameState''
+        -- render
+        glClear GL_COLOR_BUFFER_BIT
         performMinorGC
         return $ gameState''' { pendingMessages = newPendingMessages}

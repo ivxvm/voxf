@@ -9,6 +9,9 @@ import Data.Monoid (Sum(..))
 import Data.Foldable
 import Linear as Lin
 import Control.Monad.Writer.Strict
+import Foreign.Marshal.Alloc (alloca)
+import Foreign.Storable (peek)
+import Graphics.GL
 
 pattern OPENING_ANIMATION_DURATION = 1.0
 pattern CLOSING_ANIMATION_DURATION = 1.0
@@ -24,8 +27,12 @@ data ChestState = ChestState
     , contents :: Inventory
     }
 
-initialState :: EntityState ChestState
-initialState = EntityState
+data ChestRenderState = ChestRenderState
+    { texture :: GLuint
+    }
+
+initEntityState :: EntityState ChestState
+initEntityState = EntityState
     { entityId = -1
     , position = V3 0 0 0
     , rotation = Quaternion 0 (V3 0 1 0)
@@ -36,6 +43,14 @@ initialState = EntityState
         , contents = Inventory.init 96
         }
     }
+
+initRenderState :: String -> IO ChestRenderState
+initRenderState texturePath = do
+    t <- alloca $ \ptr ->
+        glGenTextures 1 ptr >> peek ptr
+    return $
+        ChestRenderState
+            { texture = t }
 
 calcDamage :: MessageMap -> EntityId -> Position -> Float
 calcDamage inMessages entityId entityPos = hitDamage + explosionDamage
@@ -99,10 +114,12 @@ update delta inMessages state = (newState, outMessages)
                 tell $ map (\ii -> DropItem ii.item ii.stackSize) $ Inventory.listItems newInventory
             tell inventoryOutMessages
 
-entityDef :: EntityDef ChestState
+entityDef :: EntityDef ChestState ChestRenderState
 entityDef = EntityDef
-    { initialState = Voxf.Entities.Chest.initialState
+    { initEntityState = Voxf.Entities.Chest.initEntityState
+    , initRenderState = Voxf.Entities.Chest.initRenderState
     , texture = ()
-    , render = \_ _ -> return ()
+    , renderBatch = Nothing
+    , renderSingle = \_ _ _ -> return ()
     , update = Voxf.Entities.Chest.update
     }
