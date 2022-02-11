@@ -1,5 +1,6 @@
 module Voxf.EntityDef where
 
+import Voxf.Prelude
 import Voxf.Message
 import Voxf.MessageMap
 import Voxf.EntityState
@@ -7,7 +8,6 @@ import Voxf.EntityState
 data EntityDef st = EntityDef
     { initialState :: EntityState st
     , texture :: ()
-    , render :: EntityState st -> IO ()
-    , update :: EntityState st -> MessageMap -> (EntityState st, [Message])
-    , destroy :: EntityState st -> [Message]
+    , render :: DeltaTime -> EntityState st -> IO ()
+    , update :: DeltaTime -> MessageMap -> EntityState st -> (EntityState st, [Message])
     }

@@ -26,20 +26,26 @@ executable voxf
       Voxf.EntityState
       Voxf.Inventory
       Voxf.InventoryItem
+      Voxf.ItemDef
       Voxf.Message
       Voxf.MessageMap
       Voxf.Prelude
+      Voxf.Types
       Paths_voxf
   hs-source-dirs:
       app
   default-extensions:
+      Strict
       OverloadedRecordDot
       DuplicateRecordFields
       DeriveGeneric
       DeriveAnyClass
       StandaloneDeriving
+      PatternSynonyms
+  ghc-options: -Werror=incomplete-patterns
   build-depends:
       base >=4.16
     , containers >=0.6
     , linear >=1.21
+    , mtl >=2.2
   default-language: Haskell2010

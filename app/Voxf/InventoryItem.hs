@@ -1,8 +1,9 @@
 module Voxf.InventoryItem (InventoryItem(..)) where
 
 import Voxf.Prelude
+import Voxf.ItemDef
 
 data InventoryItem = InventoryItem
-    { itemId :: Int
-    , itemCount :: Int
+    { item :: ItemDef
+    , stackSize :: Int
     }

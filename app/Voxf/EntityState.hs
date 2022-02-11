@@ -4,8 +4,8 @@ import Voxf.Prelude
 
 data EntityState ext = EntityState
     { entityId :: Int
-    , position :: V3 Float
-    , rotation :: Quaternion Float
+    , position :: Position
+    , rotation :: Rotation
     , durability :: Float
     , isStatic :: Bool
     , extraState :: ext

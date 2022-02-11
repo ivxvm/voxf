@@ -11,11 +11,16 @@ executable:
   source-dirs: app
   dependencies:
     - base >= 4.16
-    - linear >= 1.21
     - containers >= 0.6
+    - mtl >= 2.2
+    - linear >= 1.21
   default-extensions:
+    - Strict
     - OverloadedRecordDot
     - DuplicateRecordFields
     - DeriveGeneric
     - DeriveAnyClass
     - StandaloneDeriving
+    - PatternSynonyms
+  ghc-options:
+    - -Werror=incomplete-patterns

@@ -1,14 +1,28 @@
 module Voxf.MessageMap where
 
-import Voxf.Message
+import Voxf.Prelude
+import Voxf.Message as Message
 
-data MessageMap = MessageMap
+type MessageMap = [Message]
 
 empty :: MessageMap
-empty = MessageMap
+empty = []
 
-getByTargetEntityId :: Int -> MessageMap -> [Message]
-getByTargetEntityId = undefined
+getByTarget :: EntityId -> MessageMap -> [Message]
+getByTarget entityId messages = filter predicate messages
+    where
+        predicate msg =
+            Message.getTarget msg == Just entityId
 
-getByMessageType :: MessageType -> MessageMap -> [Message]
-getByMessageType = undefined
+getByType :: MessageType -> MessageMap -> [Message]
+getByType messageType messages = filter predicate messages
+    where
+        predicate msg =
+            Message.getType msg == messageType
+
+getByTargetAndType :: EntityId -> MessageType -> MessageMap -> [Message]
+getByTargetAndType entityId messageType messages = filter predicate messages
+    where
+        predicate msg =
+            Message.getTarget msg == Just entityId &&
+            Message.getType msg == messageType
