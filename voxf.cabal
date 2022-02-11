@@ -38,6 +38,7 @@ executable voxf
       Strict
       OverloadedRecordDot
       DuplicateRecordFields
+      FlexibleContexts
       DeriveGeneric
       DeriveAnyClass
       StandaloneDeriving

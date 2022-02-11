@@ -1,9 +1,13 @@
 module Voxf.ItemDef where
 
 data ItemDef = ItemDef
-    { name :: String
+    { id :: Int
+    , title :: String
     , description :: String
     , maxStackSize :: Int
     }
   deriving
-    (Eq, Ord, Show, Read)
+    (Show, Read)
+
+instance Eq ItemDef where
+    lhs == rhs = lhs.id == rhs.id
