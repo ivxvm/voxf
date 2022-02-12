@@ -12,10 +12,13 @@ executable:
   dependencies:
     - base >= 4.16
     - containers >= 0.6
-    - mtl >= 2.2
+    - vector >= 0.12
     - linear >= 1.21
+    - mtl >= 2.2
     - gl >= 0.9
     - GLFW-b >= 3.3
+    - atlas >= 0
+    - JuicyPixels >= 3.3
   default-extensions:
     - Strict
     - OverloadedRecordDot
@@ -25,5 +28,7 @@ executable:
     - DeriveAnyClass
     - StandaloneDeriving
     - PatternSynonyms
+    - PartialTypeSignatures
+    - TypeApplications
   ghc-options:
     - -Werror=incomplete-patterns

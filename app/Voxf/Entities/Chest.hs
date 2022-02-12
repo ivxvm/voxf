@@ -118,7 +118,7 @@ entityDef :: EntityDef ChestState ChestRenderState
 entityDef = EntityDef
     { initEntityState = Voxf.Entities.Chest.initEntityState
     , initRenderState = Voxf.Entities.Chest.initRenderState
-    , texture = ()
+    , texture = "chest.png"
     , renderBatch = Nothing
     , renderSingle = \_ _ _ -> return ()
     , update = Voxf.Entities.Chest.update
