@@ -12,6 +12,8 @@ category:       Gamedev
 homepage:       https://github.com/ivxvm/voxf#readme
 bug-reports:    https://github.com/ivxvm/voxf/issues
 maintainer:     ivxvm <ivxvm@protonmail.com>
+license:        GPL-3
+license-file:   LICENSE
 build-type:     Simple
 
 source-repository head
@@ -24,7 +26,6 @@ executable voxf
       Voxf.Entities.Chest
       Voxf.EntityDef
       Voxf.EntityState
-      Voxf.ImageUtils
       Voxf.Inventory
       Voxf.InventoryItem
       Voxf.ItemDef
@@ -32,6 +33,7 @@ executable voxf
       Voxf.MessageMap
       Voxf.Prelude
       Voxf.RenderContext
+      Voxf.TextureAtlas
       Voxf.Types
       Paths_voxf
   hs-source-dirs:
@@ -47,6 +49,7 @@ executable voxf
       PatternSynonyms
       PartialTypeSignatures
       TypeApplications
+      OverloadedStrings
   ghc-options: -Werror=incomplete-patterns
   build-depends:
       GLFW-b >=3.3
@@ -57,5 +60,7 @@ executable voxf
     , gl >=0.9
     , linear >=1.21
     , mtl >=2.2
+    , text >=2.0
+    , unordered-containers >=0.2.16
     , vector >=0.12
   default-language: Haskell2010

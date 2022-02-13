@@ -44,7 +44,7 @@ initEntityState = EntityState
         }
     }
 
-initRenderState :: String -> IO ChestRenderState
+initRenderState :: Text -> IO ChestRenderState
 initRenderState texturePath = do
     t <- alloca $ \ptr ->
         glGenTextures 1 ptr >> peek ptr
@@ -116,9 +116,10 @@ update delta inMessages state = (newState, outMessages)
 
 entityDef :: EntityDef ChestState ChestRenderState
 entityDef = EntityDef
-    { initEntityState = Voxf.Entities.Chest.initEntityState
-    , initRenderState = Voxf.Entities.Chest.initRenderState
+    { name = "basics.chest"
     , texture = "chest.png"
+    , initEntityState = Voxf.Entities.Chest.initEntityState
+    , initRenderState = Voxf.Entities.Chest.initRenderState
     , renderBatch = Nothing
     , renderSingle = \_ _ _ -> return ()
     , update = Voxf.Entities.Chest.update

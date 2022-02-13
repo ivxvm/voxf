@@ -1,15 +1,46 @@
-module Voxf.ImageUtils where
+module Voxf.TextureAtlas (TextureAtlas, build) where
 
+import Voxf.Prelude
+import Voxf.EntityDef
 import Data.IntMap.Strict as IntMap
+import Data.HashMap.Strict (HashMap)
+import qualified Data.HashMap.Strict as HashMap
 import qualified Data.Vector.Storable as Vector
 import qualified Data.Vector.Storable.Mutable as MutVector
+import qualified Data.Text as Text
 import Data.Atlas as Atlas
 import Data.Word (Word8)
 import Control.Monad
 import Control.Monad.ST
 import Codec.Picture
 
-packImages :: Int -> Int -> [Image PixelRGB8] -> Image PixelRGB8
+data TextureAtlas = TextureAtlas
+    { width :: Int
+    , height :: Int
+    , textureOffsets :: HashMap Text (Int, Int)
+    , texture :: Image PixelRGB8
+    }
+
+build :: Int -> Int -> [EntityDef Any Any] -> IO TextureAtlas
+build atlasWidth atlasHeight entityDefs = do
+    images <- forM entityDefs $ \def -> do
+        result <- readImage (Text.unpack def.texture)
+        case result of
+            Left msg -> error msg
+            Right dynImage -> do
+                return (convertRGB8 dynImage)
+    let (offsetsByIndex, atlasImage) = packImages atlasWidth atlasHeight images
+    return $
+        TextureAtlas
+            { width = atlasWidth
+            , height = atlasHeight
+            , textureOffsets = zip [0..] entityDefs
+                & fmap (\(ix, def) -> (def.name, offsetsByIndex ! ix))
+                & HashMap.fromList
+            , texture = atlasImage
+            }
+
+packImages :: Int -> Int -> [Image PixelRGB8] -> (IntMap (Int, Int), Image PixelRGB8)
 packImages atlasWidth atlasHeight images = packedImage
     where
         indexedSizes = fmap (\(ix, Image w h _) -> (ix, Pt w h)) $ zip [0..] images
@@ -31,8 +62,11 @@ packImages atlasWidth atlasHeight images = packedImage
                     Vector.unsafeCopy dst src
             frozenDstBuf <- Vector.unsafeFreeze dstBuf
             return $
-                Image
+                ( IntMap.fromList $
+                    fmap (\(ix, Pt x y) -> (ix, (x, y))) packedCoords
+                , Image
                     { imageWidth = atlasWidth
                     , imageHeight = atlasHeight
                     , imageData = frozenDstBuf
                     }
+                )

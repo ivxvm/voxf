@@ -11,7 +11,9 @@ executable:
   source-dirs: app
   dependencies:
     - base >= 4.16
+    - text >= 2.0
     - containers >= 0.6
+    - unordered-containers >= 0.2.16
     - vector >= 0.12
     - linear >= 1.21
     - mtl >= 2.2
@@ -30,5 +32,6 @@ executable:
     - PatternSynonyms
     - PartialTypeSignatures
     - TypeApplications
+    - OverloadedStrings
   ghc-options:
     - -Werror=incomplete-patterns

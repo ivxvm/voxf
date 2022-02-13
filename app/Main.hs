@@ -1,8 +1,9 @@
 module Main where
 
 import Voxf.Prelude
-import Voxf.EntityDef (EntityDef)
 import Voxf.Inventory (Inventory)
+import Voxf.EntityDef as EntityDef
+import Voxf.Entities.Chest as Chest
 import Data.Map (Map)
 import GHC.Exts (Any)
 import System.Mem (performMinorGC)
@@ -118,8 +119,13 @@ gameLoop tick = go 0.0 initialState where
 registerEntityDefs :: [EntityDef Any Any] -> IO ()
 registerEntityDefs = undefined
 
+stdEntityDefs :: [EntityDef Any Any]
+stdEntityDefs =
+    [ EntityDef.upcast Chest.entityDef ]
+
 main :: IO ()
 main = do
+    registerEntityDefs stdEntityDefs
     rawInput <- initRawInput
     setupInputCallbacks rawInput
     gameLoop $ \delta gameState -> do
