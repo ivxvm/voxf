@@ -5,8 +5,8 @@ import Foreign.Storable (peek)
 import Graphics.GL
 
 data RenderContext = RenderContext
-    { voxelVAO :: GLuint
-    , voxelVBO :: GLuint
+    { vao :: GLuint
+    , vbo :: GLuint
     }
 
 init :: IO RenderContext
@@ -16,8 +16,10 @@ init = do
     glBindVertexArray vao
     vbo <- alloca $ \ptr ->
         glGenBuffers 1 ptr >> peek ptr
+    -- glBindBuffer GL_ARRAY_BUFFER vbo
+    -- glBufferData GL_ARRAY_BUFFER
     return $
         RenderContext
-            { voxelVAO = vao
-            , voxelVBO = vbo
+            { vao = vao
+            , vbo = vbo
             }

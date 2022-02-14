@@ -43,6 +43,7 @@ executable voxf
       OverloadedRecordDot
       DuplicateRecordFields
       FlexibleContexts
+      ScopedTypeVariables
       DeriveGeneric
       DeriveAnyClass
       StandaloneDeriving

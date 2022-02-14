@@ -26,6 +26,7 @@ executable:
     - OverloadedRecordDot
     - DuplicateRecordFields
     - FlexibleContexts
+    - ScopedTypeVariables
     - DeriveGeneric
     - DeriveAnyClass
     - StandaloneDeriving
